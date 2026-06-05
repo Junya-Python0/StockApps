@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>編集</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+<h1>最低数の編集</h1>
+
+<p>{{ item["name"] }}</p>
+
+<form action="/update/{{ item['id'] }}" method="post">
+    <input type="number" name="minimum" value="{{ item['minimum'] }}" required>
+    <button type="submit" class="btn blue">保存</button>
+</form>
+
+<p><a href="/">戻る</a></p>
+</div>
+
+</body>
+</html>

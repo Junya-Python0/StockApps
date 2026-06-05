@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>StockApp</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>StockApp</h1>
+
+{% if shortage_count == 0 %}
+    <p class="safe">
+    買い足し必要品：0
+    </p>
+    {% else %}
+    <p class="alert">
+    買い足し必要品：{{ shortage_count }}
+    </p>
+{% endif %}
+
+<form action="/add" method="post" class="form-box">
+    <input name="name" placeholder="商品名" required>
+    <input name="stock" type="number" placeholder="在庫数" required>
+    <input name="minimum" type="number" placeholder="最低数" required>
+    <button type="submit">追加</button>
+</form>
+
+{% for item in items %}
+<div class="card">
+
+<div class="left">
+    <h2>{{ item["name"] }}</h2>
+    <p>在庫：{{ item["stock"] }}</p>
+
+    {% if item["stock"] <= item["minimum"] %}
+    <span style="color:red;">買い足し必要</span>
+    {% endif %}
+</div>
+
+<div class="right">
+    {% if item["stock"] > 0 %}
+    <a href="/use/{{ item['id'] }}" class="btn red">使った</a>
+    {% else %}
+    <span class="btn gray">在庫なし</span>
+    {% endif %}
+    <a href="/buy/{{ item['id'] }}" class="btn blue">購入</a>
+    <a href="/edit/{{ item['id'] }}" class="btn blue">編集</a>
+    <a href="/delete/{{ item['id'] }}"
+   class="btn gray"
+   onclick="return confirm('本当に削除しますか？')">
+   削除
+    </a>
+</div>
+
+</div>
+{% endfor %}
+
+</div>
+
+</body>
+</html>
