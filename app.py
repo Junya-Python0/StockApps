@@ -1,12 +1,37 @@
-from flask import Flask, render_template, request, redirect
 import sqlite3
+from pathlib import Path
+
+from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
 
+BASE_DIR = Path(__file__).resolve().parent
+DB_PATH = BASE_DIR / "stock.db"
+
+
 def get_db():
-    conn = sqlite3.connect("stock.db")
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def init_db():
+    conn = get_db()
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            stock INTEGER NOT NULL,
+            minimum INTEGER NOT NULL
+        )
+        """
+    )
+    conn.commit()
+    conn.close()
+
+
+init_db()
 
 @app.route("/")
 def index():
