@@ -25,6 +25,11 @@ def write_log(action, item_name="", item_id="", ip="", user_agent=""):
         f"{action} id={item_id} name={item_name} ip={ip} ua={user_agent}"
     )
 
+def get_client_ip():
+    return request.headers.get(
+        "CF-Connecting-IP",
+        request.remote_addr
+    )
 
 # ==========================
 # DB接続
@@ -111,7 +116,7 @@ def add():
         action="ADD",
         item_name=name,
         item_id=cur.lastrowid,
-        ip=request.remote_addr,
+        ip=get_client_ip(),
         user_agent=request.headers.get("User-Agent"),
     )
 
@@ -144,7 +149,7 @@ def use(id):
             action="USE",
             item_name=item["name"],
             item_id=id,
-            ip=request.remote_addr,
+            ip=get_client_ip(),
             user_agent=request.headers.get("User-Agent"),
         )
 
@@ -177,7 +182,7 @@ def buy(id):
             action="BUY",
             item_name=item["name"],
             item_id=id,
-            ip=request.remote_addr,
+            ip=get_client_ip(),
             user_agent=request.headers.get("User-Agent"),
         )
 
@@ -210,7 +215,7 @@ def delete(id):
             action="DELETE",
             item_name=item["name"],
             item_id=id,
-            ip=request.remote_addr,
+            ip=get_client_ip(),
             user_agent=request.headers.get("User-Agent"),
         )
 
@@ -262,7 +267,7 @@ def update(id):
             action=f"UPDATE minimum={minimum}",
             item_name=item["name"],
             item_id=id,
-            ip=request.remote_addr,
+            ip=get_client_ip(),
             user_agent=request.headers.get("User-Agent"),
         )
 
