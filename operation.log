@@ -1,0 +1,4 @@
+2026-07-15 12:41:18 Serving on http://0.0.0.0:5000
+2026-07-15 12:41:42 ADD id=9 name=テスト ip=192.168.1.26 ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0
+2026-07-15 12:41:51 DELETE id=9 name=テスト ip=192.168.1.26 ua=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0
+2026-07-15 12:49:58 ADD id=10 name=csrf-test ip=127.0.0.1 ua=Werkzeug/3.1.8

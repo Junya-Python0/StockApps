@@ -1,10 +1,13 @@
-import sqlite3
 import logging
+import os
+import secrets
+import sqlite3
 from pathlib import Path
 
-from flask import Flask, redirect, render_template, request
+from flask import Flask, abort, redirect, render_template, request, session
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "stock.db"
@@ -30,6 +33,19 @@ def get_client_ip():
         "CF-Connecting-IP",
         request.remote_addr
     )
+
+
+def generate_csrf_token():
+    if "csrf_token" not in session:
+        session["csrf_token"] = secrets.token_hex(32)
+    return session["csrf_token"]
+
+
+def verify_csrf_token():
+    submitted = request.form.get("csrf_token", "")
+    expected = session.get("csrf_token", "")
+    if submitted != expected:
+        abort(400)
 
 # ==========================
 # DB接続
@@ -64,6 +80,7 @@ init_db()
 # ==========================
 @app.route("/")
 def index():
+    csrf_token = generate_csrf_token()
     conn = get_db()
 
     items = conn.execute(
@@ -91,6 +108,7 @@ def index():
         "index.html",
         items=items,
         shortage_count=shortage_count,
+        csrf_token=csrf_token,
     )
 
 
@@ -99,6 +117,7 @@ def index():
 # ==========================
 @app.route("/add", methods=["POST"])
 def add():
+    verify_csrf_token()
     name = request.form["name"]
     stock = request.form["stock"]
     minimum = request.form["minimum"]
@@ -130,6 +149,7 @@ def add():
 # ==========================
 @app.route("/use/<int:id>", methods=["POST"])
 def use(id):
+    verify_csrf_token()
     conn = get_db()
 
     item = conn.execute(
@@ -163,6 +183,7 @@ def use(id):
 # ==========================
 @app.route("/buy/<int:id>", methods=["POST"])
 def buy(id):
+    verify_csrf_token()
     conn = get_db()
 
     item = conn.execute(
@@ -196,6 +217,7 @@ def buy(id):
 # ==========================
 @app.route("/delete/<int:id>", methods=["POST"])
 def delete(id):
+    verify_csrf_token()
     conn = get_db()
 
     item = conn.execute(
@@ -229,6 +251,7 @@ def delete(id):
 # ==========================
 @app.route("/edit/<int:id>")
 def edit(id):
+    csrf_token = generate_csrf_token()
     conn = get_db()
 
     item = conn.execute(
@@ -238,7 +261,7 @@ def edit(id):
 
     conn.close()
 
-    return render_template("edit.html", item=item)
+    return render_template("edit.html", item=item, csrf_token=csrf_token)
 
 
 # ==========================
@@ -246,6 +269,7 @@ def edit(id):
 # ==========================
 @app.route("/update/<int:id>", methods=["POST"])
 def update(id):
+    verify_csrf_token()
     minimum = request.form["minimum"]
 
     conn = get_db()

@@ -23,6 +23,7 @@
 {% endif %}
 
 <form action="/add" method="post" class="form-box">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <input name="name" placeholder="商品名" required>
     <input name="stock" type="number" placeholder="在庫数" required>
     <input name="minimum" type="number" placeholder="最低数" required>
@@ -44,17 +45,20 @@
 <div class="right">
     {% if item["stock"] > 0 %}
     <form action="/use/{{ item['id'] }}" method="post" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <button type="submit" class="btn red">使った</button>
     </form>
     {% else %}
     <span class="btn gray">在庫なし</span>
     {% endif %}
     <form action="/buy/{{ item['id'] }}" method="post" style="display:inline;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <button type="submit" class="btn blue">購入</button>
     </form>
     <a href="/edit/{{ item['id'] }}" class="btn blue">編集</a>
     <form action="/delete/{{ item['id'] }}" method="post" style="display:inline;"
           onsubmit="return confirm('本当に削除しますか？')">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <button type="submit" class="btn gray">削除</button>
     </form>
 </div>

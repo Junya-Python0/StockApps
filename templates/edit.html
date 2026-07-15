@@ -14,6 +14,7 @@
 <p>{{ item["name"] }}</p>
 
 <form action="/update/{{ item['id'] }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <input type="number" name="minimum" value="{{ item['minimum'] }}" required>
     <button type="submit" class="btn blue">保存</button>
 </form>
