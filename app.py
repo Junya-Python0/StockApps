@@ -128,7 +128,7 @@ def add():
 # ==========================
 # 使用
 # ==========================
-@app.route("/use/<int:id>")
+@app.route("/use/<int:id>", methods=["POST"])
 def use(id):
     conn = get_db()
 
@@ -161,7 +161,7 @@ def use(id):
 # ==========================
 # 購入
 # ==========================
-@app.route("/buy/<int:id>")
+@app.route("/buy/<int:id>", methods=["POST"])
 def buy(id):
     conn = get_db()
 
@@ -194,7 +194,7 @@ def buy(id):
 # ==========================
 # 削除
 # ==========================
-@app.route("/delete/<int:id>")
+@app.route("/delete/<int:id>", methods=["POST"])
 def delete(id):
     conn = get_db()
 

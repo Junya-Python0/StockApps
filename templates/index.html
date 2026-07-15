@@ -43,17 +43,20 @@
 
 <div class="right">
     {% if item["stock"] > 0 %}
-    <a href="/use/{{ item['id'] }}" class="btn red">使った</a>
+    <form action="/use/{{ item['id'] }}" method="post" style="display:inline;">
+        <button type="submit" class="btn red">使った</button>
+    </form>
     {% else %}
     <span class="btn gray">在庫なし</span>
     {% endif %}
-    <a href="/buy/{{ item['id'] }}" class="btn blue">購入</a>
+    <form action="/buy/{{ item['id'] }}" method="post" style="display:inline;">
+        <button type="submit" class="btn blue">購入</button>
+    </form>
     <a href="/edit/{{ item['id'] }}" class="btn blue">編集</a>
-    <a href="/delete/{{ item['id'] }}"
-   class="btn gray"
-   onclick="return confirm('本当に削除しますか？')">
-   削除
-    </a>
+    <form action="/delete/{{ item['id'] }}" method="post" style="display:inline;"
+          onsubmit="return confirm('本当に削除しますか？')">
+        <button type="submit" class="btn gray">削除</button>
+    </form>
 </div>
 
 </div>
