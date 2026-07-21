@@ -3,8 +3,8 @@ import os
 import secrets
 import sqlite3
 from pathlib import Path
-
 from flask import Flask, abort, redirect, render_template, request, session
+from flask import send_from_directory
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", secrets.token_hex(32))
@@ -298,6 +298,15 @@ def update(id):
     conn.close()
 
     return redirect("/")
+
+
+@app.route("/manifest.json")
+def manifest():
+    return send_from_directory("static", "manifest.json")
+
+@app.route("/sw.js")
+def sw():
+    return send_from_directory("static", "sw.js")
 
 
 if __name__ == "__main__":
