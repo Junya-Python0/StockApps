@@ -15,6 +15,7 @@
 <div id="splash">
     <img src="/static/icon-512.png" alt="StockApp">
     <h1>StockApp</h1>
+    <p>家庭の在庫をスマートに管理</p>
 </div>
 
 <div class="container">
@@ -25,7 +26,7 @@
     <p class="safe">
     買い足し必要品：0
     </p>
-    {% else %}
+{% else %}
     <p class="alert">
     買い足し必要品：{{ shortage_count }}
     </p>
@@ -60,11 +61,14 @@
     {% else %}
     <span class="btn gray">在庫なし</span>
     {% endif %}
+
     <form action="/buy/{{ item['id'] }}" method="post" style="display:inline;">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <button type="submit" class="btn blue">購入</button>
     </form>
+
     <a href="/edit/{{ item['id'] }}" class="btn blue">編集</a>
+
     <form action="/delete/{{ item['id'] }}" method="post" style="display:inline;"
           onsubmit="return confirm('本当に削除しますか？')">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -85,9 +89,18 @@ if ("serviceWorker" in navigator) {
 
 <script>
 window.addEventListener("load", () => {
+
+    const splash = document.getElementById("splash");
+
     setTimeout(() => {
-        document.getElementById("splash").classList.add("hide");
-    }, 1000);
+        splash.classList.add("hide");
+
+        setTimeout(() => {
+            splash.remove();
+        },500);
+
+    },1200);
+
 });
 </script>
 
