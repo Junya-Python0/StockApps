@@ -90,6 +90,14 @@ if ("serviceWorker" in navigator) {
 <script>
 window.addEventListener("load", () => {
 
+    // 一度表示したら記録
+    if (sessionStorage.getItem("splashShown")) {
+        document.getElementById("splash").remove();
+        return;
+    }
+
+    sessionStorage.setItem("splashShown", "true");
+
     const splash = document.getElementById("splash");
 
     setTimeout(() => {
@@ -97,9 +105,9 @@ window.addEventListener("load", () => {
 
         setTimeout(() => {
             splash.remove();
-        },500);
+        }, 500);
 
-    },1200);
+    }, 1200);
 
 });
 </script>
