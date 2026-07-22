@@ -78,7 +78,7 @@ button {
     position:fixed;
     inset:0;
     background:linear-gradient(180deg,#1976d2,#1565c0);
-    display:flex;
+    display:none;
     flex-direction:column;
     justify-content:center;
     align-items:center;
