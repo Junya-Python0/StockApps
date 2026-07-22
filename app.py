@@ -300,13 +300,9 @@ def update(id):
     return redirect("/")
 
 
-@app.route("/manifest.json")
-def manifest():
-    return send_from_directory("static", "manifest.json")
-
 @app.route("/sw.js")
 def sw():
-    return send_from_directory("static", "sw.js")
+    return send_from_directory(BASE_DIR, "sw.js", mimetype="application/javascript")
 
 
 if __name__ == "__main__":
